@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <script type="text/javascript" src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script type="text/javascript">
+        var bridge;
+
+        // 初始化 WebChannel，当页面加载完成时
+        window.onload = function () {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                bridge = channel.objects.bridge;
+            });
+        };
+
+        // 登录按钮点击事件
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            // 调用 Qt 侧的 handleLogin 方法
+            bridge.handleLogin(username, password);
+        }
+
+        // 处理 Qt 应用的响应
+        function onLoginResponse(message) {
+            document.getElementById("response").innerText = message;
+        }
+    </script>
+</head>
+<body>
+    <h1>Login Page</h1>
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter username"><br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter password"><br><br>
+    <button onclick="login()">Login</button>
+    <p id="response"></p> <!-- 显示来自 Qt 应用的响应 -->
+</body>
+</html>
