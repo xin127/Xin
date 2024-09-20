@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+    <script>
+        let myObject;
+
+        window.onload = function () {
+            new QWebChannel(qt.webChannelTransport, function (channel) {
+                myObject = channel.myObject;
+            });
+        };
+
+        function login() {
+            const username = document.getElementById("usernameInput").value;
+            if (myObject) {
+                myObject.onLoginSuccess(username);
+            }
+        }
+
+        function onReceiveMessage(message) {
+            alert(message);
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="usernameInput" placeholder="Enter username">
+    <button onclick="login()">Login</button>
+</body>
+</html>
